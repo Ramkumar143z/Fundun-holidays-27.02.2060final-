@@ -148,11 +148,16 @@
     <link rel="preconnect" href="https://res.cloudinary.com">
 
     <!-- Google Fonts - Non-blocking (moved from CSS @import) -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <!-- Font Awesome - Non-blocking preload -->
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"></noscript>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    </noscript>
 
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="style.css">
@@ -331,7 +336,11 @@
 
     <!-- SPLASH SCREEN -->
     <div id="spl">
+        <!-- Canvas map background -->
+        <canvas id="spl-map"></canvas>
+
         <div id="spl-flare"></div>
+
         <div id="spl-center">
             <div id="spl-ring1"></div>
             <div id="spl-ring2"></div>
@@ -339,6 +348,7 @@
                 src="https://res.cloudinary.com/drlg1t6pk/image/upload/f_auto,q_auto,w_300/v1769239791/img4-removebg-preview_ltwiue.png"
                 alt="Fundun Holidays" fetchpriority="high">
         </div>
+
         <div id="spl-name">
             <span id="spl-f">FUNDUN</span>
             <span id="spl-h">HOLIDAYS</span>
@@ -1487,7 +1497,9 @@
                             <i class="fas fa-envelope"></i>
                         </div>
                         <h3>Email</h3>
-                        <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9bfdeef5ffeef5f3f4f7f2fffae2e8dbfcf6faf2f7b5f8f4f6">[email&#160;protected]</a></p>
+                        <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                                data-cfemail="9bfdeef5ffeef5f3f4f7f2fffae2e8dbfcf6faf2f7b5f8f4f6">[email&#160;protected]</a>
+                        </p>
                         <small>Open Mail App</small>
                     </div>
                 </div>
@@ -1595,7 +1607,9 @@
                     <div class="footer-box">
                         <h4>Contact Us</h4>
                         <p><i class="fas fa-phone"></i> +91 95855 75354</p>
-                        <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cfaba6a1aabca7acbcaafefbfd8fa8a2aea6a3e1aca0a2">[email&#160;protected]</a></p>
+                        <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                                data-cfemail="cfaba6a1aabca7acbcaafefbfd8fa8a2aea6a3e1aca0a2">[email&#160;protected]</a>
+                        </p>
                         <p><i class="fas fa-map-marker-alt"></i> Tamil Nadu, India</p>
                     </div>
 
@@ -1662,66 +1676,336 @@
                 <div class="footer-box">
                     <h4>Contact Us</h4>
                     <p><i class="fas fa-phone"></i> +91 7010954360</p>
-                    <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fa9c8f949e8f94929596939e9b8389ba9d979b9396d4999597">[email&#160;protected]</a></p>
+                    <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                            data-cfemail="fa9c8f949e8f94929596939e9b8389ba9d979b9396d4999597">[email&#160;protected]</a>
+                    </p>
                     <p><i class="fas fa-map-marker-alt"></i> 25/1, Ranga Layout 2, NALLAPALAYAM, Ganapathy, Coimbatore,
                         Tamil Nadu 641006</p>
                 </div>
 
             </div>
 
-            <div cla
-            <div class="footer-bottom">
+            <div cla <div class="footer-bottom">
                 <p>© 2025 Fundun Holidays. All rights reserved. | Designed with ❤️ for Travelers</p>
             </div>
 
         </footer>
-    </div><!-- end detailPage -->
+        </div><!-- end detailPage -->
 
-    <!-- Script - deferred for performance -->
-    <script src="script.js" defer></script>
+        <!-- Script - deferred for performance -->
+        <script src="script.js" defer></script>
 
 </body>
 
 
 
-    <!-- SPLASH JS -->
-    <script>
-    (function(){
-        var spl  = document.getElementById('spl');
-        var bar  = document.getElementById('spl-logo'); /* reuse for timing ref */
+<!-- SPLASH JS -->
+<script>
+    (function () {
+        var spl = document.getElementById('spl');
+        var cv = document.getElementById('spl-map');
+        var ctx = cv.getContext('2d');
+        var W, H, RAF;
+        var lastT = 0;
 
-        /* Timeline:
-           0.0s  black screen
-           0.2s  logo zooms in from a point of light
-           0.55s rings appear
-           0.85s brand name slides up
-           1.1s  gold line wipes across
-           1.2s  gold shimmer starts on text
-           --- hold for 0.8s ---
-           2.3s  lens flare burst
-           2.55s fade to black, then website
-        */
+        function resize() {
+            W = cv.width = window.innerWidth;
+            H = cv.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
 
-        function hide() {
-            /* Step 1: lens flare */
-            spl.classList.add('spl-flare-active');
-            /* Step 2: after flare peaks, fade out */
-            setTimeout(function() {
-                spl.classList.add('spl-out');
-                setTimeout(function() {
-                    spl.style.display = 'none';
-                    document.body.classList.remove('splash-active');
-                }, 580);
-            }, 260);
+        /* ── Smooth lerp helpers ── */
+        function lerp(a, b, t) { return a + (b - a) * t; }
+        function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+        function easeInOut(t) { return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
+
+        /* ── Continent polygons [x,y] normalised 0-1 ── */
+        var continents = [
+            /* North America */
+            [[.07, .12], [.13, .08], [.21, .09], [.27, .14], [.29, .23], [.25, .32], [.21, .38], [.16, .42], [.12, .37], [.09, .28], [.07, .19]],
+            /* Greenland */
+            [[.18, .04], [.25, .02], [.30, .04], [.29, .10], [.23, .12], [.17, .09]],
+            /* Central America */
+            [[.20, .42], [.23, .43], [.22, .48], [.19, .50], [.17, .46]],
+            /* South America */
+            [[.21, .50], [.27, .48], [.32, .53], [.35, .61], [.34, .73], [.28, .83], [.23, .84], [.18, .78], [.17, .65], [.19, .55]],
+            /* Europe */
+            [[.44, .11], [.48, .08], [.53, .10], [.55, .16], [.52, .22], [.47, .24], [.43, .20], [.43, .14]],
+            /* Scandinavia */
+            [[.47, .05], [.50, .04], [.52, .07], [.51, .12], [.47, .10]],
+            /* UK */
+            [[.42, .12], [.44, .10], [.46, .14], [.43, .16]],
+            /* Africa */
+            [[.45, .24], [.50, .22], [.56, .24], [.58, .33], [.57, .45], [.54, .58], [.49, .62], [.45, .57], [.43, .45], [.43, .34]],
+            /* Middle East */
+            [[.54, .22], [.59, .20], [.63, .26], [.60, .32], [.55, .30]],
+            /* Asia */
+            [[.54, .10], [.62, .07], [.72, .08], [.80, .10], [.86, .14], [.88, .20], [.82, .26], [.73, .28], [.65, .26], [.57, .24], [.54, .17]],
+            /* Indian subcontinent */
+            [[.61, .28], [.66, .27], [.68, .33], [.66, .41], [.63, .44], [.60, .40], [.59, .32]],
+            /* SE Asia */
+            [[.74, .28], [.80, .26], [.82, .32], [.79, .37], [.75, .34]],
+            /* Japan */
+            [[.83, .16], [.86, .14], [.87, .18], [.85, .20], [.83, .18]],
+            /* Australia */
+            [[.74, .58], [.82, .56], [.88, .60], [.89, .68], [.85, .74], [.79, .76], [.73, .72], [.71, .64], [.73, .58]],
+        ];
+
+        /* ── City pins [x, y, isHome] ── */
+        var cities = [
+            [.630, .355, true],  /* Coimbatore — HOME */
+            [.590, .295, false],  /* Delhi */
+            [.572, .265, false],  /* Dubai */
+            [.460, .138, false],  /* London */
+            [.468, .132, false],  /* Paris */
+            [.178, .218, false],  /* New York */
+            [.768, .335, false],  /* Singapore */
+            [.752, .298, false],  /* Bangkok */
+            [.851, .175, false],  /* Tokyo */
+            [.818, .682, false],  /* Sydney */
+            [.218, .525, false],  /* Rio */
+            [.500, .358, false],  /* Nairobi */
+        ];
+
+        /* ── Flight routes [fromIdx, toIdx] ── */
+        var routes = [
+            [0, 2], [0, 1], [0, 6], [0, 7], [0, 11],
+            [2, 3], [3, 4], [3, 5],
+            [1, 8], [6, 8], [6, 9], [4, 5],
+        ];
+
+        /* ── Ctrl point for arc (curves upward) ── */
+        function ctrl(a, b) {
+            var mx = (a[0] + b[0]) * .5, my = (a[1] + b[1]) * .5;
+            var dx = b[0] - a[0], dy = b[1] - a[1];
+            var d = Math.sqrt(dx * dx + dy * dy);
+            return [mx - dy * .3, my - d * .3];
         }
 
-        /* Total display time = 2.3s then exit */
-        setTimeout(hide, 2300);
+        /* ── Bezier point ── */
+        function bez(a, cp, b, t) {
+            var mt = 1 - t;
+            return [mt * mt * a[0] + 2 * mt * t * cp[0] + t * t * b[0],
+            mt * mt * a[1] + 2 * mt * t * cp[1] + t * t * b[1]];
+        }
 
-        /* Safety */
-        setTimeout(function(){
-            if (spl.style.display !== 'none') hide();
-        }, 5000);
+        /* ── Planes — one per route, staggered ── */
+        var planes = routes.map(function (r, i) {
+            return { r: r, t: i / routes.length, spd: .0014 + Math.random() * .0007, trail: [], glow: 0 };
+        });
+
+        /* ── Grid dots ── */
+        var dots = [];
+        for (var row = 0; row < 30; row++)
+            for (var col = 0; col < 60; col++) {
+                if (Math.random() > .44) continue;
+                dots.push({ x: col / 60, y: row / 30, ph: Math.random() * Math.PI * 2, a: .06 + Math.random() * .12 });
+            }
+
+        /* ── Shooting stars ── */
+        var stars = [], starCd = 0;
+        function mkStar() {
+            return {
+                x: Math.random() * .7 + .05, y: Math.random() * .35,
+                len: .10 + Math.random() * .14,
+                ang: (22 + Math.random() * 32) * Math.PI / 180,
+                spd: .003 + Math.random() * .004, a: 0, maxA: .85, phase: 'in'
+            };
+        }
+
+        /* ── Map fade-in progress ── */
+        var mapAlpha = 0;
+        var startMs = Date.now();
+
+        /* ─── RENDER ─── */
+        function draw(ts) {
+            RAF = requestAnimationFrame(draw);
+            if (spl.style.display === 'none') { cancelAnimationFrame(RAF); return; }
+
+            var dt = Math.min((ts - lastT) * .001, .05); /* delta seconds, capped */
+            lastT = ts;
+            var elapsed = (Date.now() - startMs) * .001;
+
+            /* Smooth map fade-in over 1.8s */
+            mapAlpha = clamp(elapsed / 1.8, 0, 1);
+
+            resize();
+            ctx.clearRect(0, 0, W, H);
+
+            /* 1. Black base */
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, W, H);
+
+            /* 2. Subtle warm radial */
+            var bg = ctx.createRadialGradient(W * .5, H * .48, 0, W * .5, H * .48, W * .65);
+            bg.addColorStop(0, 'rgba(18,10,0,1)');
+            bg.addColorStop(.7, 'rgba(6,3,0,1)');
+            bg.addColorStop(1, 'rgba(0,0,0,1)');
+            ctx.fillStyle = bg;
+            ctx.fillRect(0, 0, W, H);
+
+            ctx.globalAlpha = mapAlpha;
+
+            /* 3. Dot grid */
+            dots.forEach(function (d) {
+                var p = .5 + .5 * Math.sin(elapsed * .85 + d.ph);
+                ctx.beginPath();
+                ctx.arc(d.x * W, d.y * H, Math.max(W * .0012, 1), 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(212,175,55,' + (d.a * p) + ')';
+                ctx.fill();
+            });
+
+            /* 4. Continents — soft fill + crisp stroke */
+            continents.forEach(function (pts) {
+                ctx.beginPath();
+                /* Smooth continent edges with quadratic curves */
+                ctx.moveTo(pts[0][0] * W, pts[0][1] * H);
+                for (var i = 1; i < pts.length; i++) {
+                    var prev = pts[i - 1], cur = pts[i];
+                    var mx = (prev[0] + cur[0]) * .5 * W;
+                    var my = (prev[1] + cur[1]) * .5 * H;
+                    ctx.quadraticCurveTo(prev[0] * W, prev[1] * H, mx, my);
+                }
+                ctx.closePath();
+                ctx.fillStyle = 'rgba(212,175,55,0.048)';
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(212,175,55,0.17)';
+                ctx.lineWidth = .7;
+                ctx.stroke();
+            });
+
+            /* 5. Route arcs */
+            routes.forEach(function (r) {
+                var a = cities[r[0]], b = cities[r[1]];
+                var cp = ctrl(a, b);
+                ctx.beginPath();
+                ctx.moveTo(a[0] * W, a[1] * H);
+                ctx.quadraticCurveTo(cp[0] * W, cp[1] * H, b[0] * W, b[1] * H);
+                ctx.setLineDash([3, 6]);
+                ctx.lineWidth = .65;
+                ctx.strokeStyle = 'rgba(212,175,55,0.13)';
+                ctx.stroke();
+                ctx.setLineDash([]);
+            });
+
+            /* 6. Planes */
+            planes.forEach(function (pl) {
+                pl.t = (pl.t + pl.spd * dt * 60) % 1;
+                var a = cities[pl.r[0]], b = cities[pl.r[1]];
+                var cp = ctrl(a, b);
+                var pos = bez(a, cp, b, easeInOut(pl.t));
+
+                /* Smooth trail */
+                pl.trail.push([pos[0], pos[1]]);
+                if (pl.trail.length > 28) pl.trail.shift();
+
+                for (var ti = 1; ti < pl.trail.length; ti++) {
+                    var pct = ti / pl.trail.length;
+                    var tp = pl.trail[ti];
+                    var tp0 = pl.trail[ti - 1];
+                    ctx.beginPath();
+                    ctx.moveTo(tp0[0] * W, tp0[1] * H);
+                    ctx.lineTo(tp[0] * W, tp[1] * H);
+                    ctx.strokeStyle = 'rgba(244,215,90,' + (pct * .32) + ')';
+                    ctx.lineWidth = lerp(.4, 1.8, pct);
+                    ctx.stroke();
+                }
+
+                /* Plane head glow — soft multi-layer */
+                var px = pos[0] * W, py = pos[1] * H;
+                [12, 6, 2.5].forEach(function (rad, i) {
+                    var alphas = [.10, .20, .85];
+                    ctx.beginPath();
+                    ctx.arc(px, py, rad, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255,240,150,' + alphas[i] + ')';
+                    ctx.fill();
+                });
+            });
+
+            /* 7. City pins */
+            cities.forEach(function (c) {
+                var cx = c[0] * W, cy = c[1] * H, home = c[2];
+                if (home) {
+                    var p = .5 + .5 * Math.sin(elapsed * 2.2);
+                    /* Outer pulse ring */
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, 9 + p * 5, 0, Math.PI * 2);
+                    ctx.strokeStyle = 'rgba(212,175,55,' + (0.25 - p * .15) + ')';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                    /* Mid ring */
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, 5.5, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(212,175,55,0.14)';
+                    ctx.fill();
+                    /* Core */
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255,240,160,0.95)';
+                    ctx.fill();
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, 1.8, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(212,175,55,0.5)';
+                    ctx.fill();
+                }
+            });
+
+            /* 8. Shooting stars */
+            starCd += dt;
+            if (starCd > 1.2) { starCd = 0; if (stars.length < 3) stars.push(mkStar()); }
+            for (var si = stars.length - 1; si >= 0; si--) {
+                var s = stars[si];
+                var ex = s.x + Math.cos(s.ang) * s.len;
+                var ey = s.y + Math.sin(s.ang) * s.len;
+                if (s.phase === 'in') {
+                    s.a = Math.min(s.a + dt * 2.5, s.maxA);
+                    if (s.a >= s.maxA) s.phase = 'out';
+                } else {
+                    s.a -= dt * 1.2;
+                }
+                if (s.a <= 0) { stars.splice(si, 1); continue; }
+                var lg = ctx.createLinearGradient(s.x * W, s.y * H, ex * W, ey * H);
+                lg.addColorStop(0, 'rgba(255,250,220,0)');
+                lg.addColorStop(.45, 'rgba(244,215,100,' + (s.a * .55) + ')');
+                lg.addColorStop(1, 'rgba(255,255,255,' + s.a + ')');
+                ctx.beginPath();
+                ctx.moveTo(s.x * W, s.y * H); ctx.lineTo(ex * W, ey * H);
+                ctx.strokeStyle = lg; ctx.lineWidth = 1.3; ctx.stroke();
+                s.x += Math.cos(s.ang) * s.spd;
+                s.y += Math.sin(s.ang) * s.spd;
+            }
+
+            ctx.globalAlpha = 1;
+
+            /* 9. Vignette — smooth radial, keeps center open for UI */
+            var vig = ctx.createRadialGradient(W * .5, H * .5, H * .08, W * .5, H * .5, H * .78);
+            vig.addColorStop(0, 'rgba(0,0,0,0.65)');
+            vig.addColorStop(.38, 'rgba(0,0,0,0.30)');
+            vig.addColorStop(.75, 'rgba(0,0,0,0.72)');
+            vig.addColorStop(1, 'rgba(0,0,0,0.94)');
+            ctx.fillStyle = vig;
+            ctx.fillRect(0, 0, W, H);
+        }
+        requestAnimationFrame(draw);
+
+        /* ── EXIT ── */
+        function hide() {
+            spl.classList.add('spl-flare-active');
+            setTimeout(function () {
+                spl.classList.add('spl-out');
+                setTimeout(function () {
+                    spl.style.display = 'none';
+                    document.body.classList.remove('splash-active');
+                }, 1050);
+            }, 320);
+        }
+
+        /* Show for 3s then smooth exit */
+        setTimeout(hide, 3000);
+        setTimeout(function () { if (spl.style.display !== 'none') hide(); }, 7000);
     })();
-    </script>
+</script>
+
 </html>
